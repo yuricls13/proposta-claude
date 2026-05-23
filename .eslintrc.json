@@ -1,0 +1,4 @@
+{
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": [".aiox-core/**", ".claude/**", ".codex/**", ".cursor/**", ".gemini/**", ".kimi/**", ".antigravity/**", ".github/**"]
+}

@@ -1,0 +1,59 @@
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+.env.production*
+*.key
+*.pem
+
+# Dependencies
+node_modules/
+node_modules
+
+# Build & Logs
+dist/
+build/
+*.log
+logs/
+.next/
+out/
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Tests
+coverage/
+
+# Vercel
+.vercel
+
+# AIOX framework + agents (não fazem parte do app)
+.aiox-core/
+.aiox/
+.claude/
+.codex/
+.cursor/
+.gemini/
+.kimi/
+.antigravity/
+.agents/
+.github/agents/
+AGENTS.md
+docs/research/
+docs/stories/
+docs/qa/
+.env.example

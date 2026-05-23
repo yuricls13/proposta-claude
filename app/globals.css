@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+    /* shadcn CSS variables — espelham tokens do tailwind.config.ts */
+    --background: 38 38% 97%;
+    --foreground: 30 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 30 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 6% 10%;
+    --primary: 167 33% 28%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 38 25% 92%;
+    --secondary-foreground: 30 6% 10%;
+    --muted: 38 25% 92%;
+    --muted-foreground: 36 6% 41%;
+    --accent: 167 33% 90%;
+    --accent-foreground: 167 33% 23%;
+    --destructive: 0 75% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 36 25% 84%;
+    --input: 36 25% 84%;
+    --ring: 167 33% 28%;
+    --radius: 10px;
+  }
+
+  * {
+    @apply border-ink-line;
+  }
+
+  html {
+    @apply antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
+
+  ::selection {
+    @apply bg-accent-soft text-accent-hover;
+  }
+
+  /* Disable focus outline on mouse, preserve for keyboard */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer components {
+  .card-elevated {
+    @apply rounded-lg border border-ink-line bg-white shadow-soft;
+  }
+
+  /* Status badges — design semântico próprio (shadcn Badge é genérico) */
+  .badge-status {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors;
+  }
+  .badge-draft     { @apply border-ink-line bg-bg-alt text-ink-mute; }
+  .badge-sent      { @apply border-accent/30 bg-accent-soft text-accent-hover; }
+  .badge-viewed    { @apply border-amber-300 bg-amber-50 text-amber-900; }
+  .badge-accepted  { @apply border-emerald-300 bg-emerald-50 text-emerald-900; }
+  .badge-rejected  { @apply border-red-300 bg-red-50 text-red-900; }
+  .badge-expired   { @apply border-zinc-300 bg-zinc-50 text-zinc-700; }
+
+  .editorial {
+    @apply font-serif text-ink;
+    font-feature-settings: 'ss01', 'liga', 'kern', 'onum';
+  }
+
+  .editorial p {
+    @apply font-sans text-ink-soft leading-relaxed;
+  }
+
+  /* Shimmer effect para Skeleton loaders */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--secondary)) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .pretty-prose {
+    text-wrap: pretty;
+  }
+
+  /* Tactile press feedback */
+  .press-feedback {
+    @apply transition-transform duration-150 ease-spring active:scale-[0.98];
+  }
+}

@@ -1,0 +1,219 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ────────────────────────────────────────────────────────────────
+// IDENTIDADE
+// ────────────────────────────────────────────────────────────────
+
+model User {
+  id              String              @id @default(cuid())
+  email           String              @unique
+  passwordHash    String
+  name            String?
+  avatarUrl       String?
+  activeWorkspaceId String?
+  memberships     WorkspaceMember[]
+  ownedWorkspaces Workspace[]         @relation("WorkspaceOwner")
+  sessions        Session[]
+  createdAt       DateTime            @default(now())
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
+
+// ────────────────────────────────────────────────────────────────
+// WORKSPACE (multi-tenant)
+// ────────────────────────────────────────────────────────────────
+
+model Workspace {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  ownerId     String
+  owner       User     @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+
+  // Branding
+  logoUrl     String?
+  accentColor String   @default("#2F5D50")
+  fontPair    String   @default("editorial") // editorial | modern | classic | mono
+  brandTone   String?  // Tom de voz padrão para AI/templates
+
+  // Plano e cobrança (mock no MVP, integração Stripe pós)
+  plan        String   @default("FREE") // FREE | STARTER | PRO | BUSINESS
+  trialEndsAt DateTime?
+
+  members     WorkspaceMember[]
+  proposals   Proposal[]
+  templates   ProposalTemplate[]
+  invitations Invitation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role        String    @default("MEMBER") // OWNER | ADMIN | MEMBER
+  joinedAt    DateTime  @default(now())
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+model Invitation {
+  id          String    @id @default(cuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  email       String
+  role        String    @default("MEMBER")
+  token       String    @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([workspaceId])
+}
+
+// ────────────────────────────────────────────────────────────────
+// PROPOSAL (com workspace)
+// ────────────────────────────────────────────────────────────────
+
+model Proposal {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  description   String?
+  clientName    String
+  clientEmail   String?
+  clientCompany String?
+  validUntil    DateTime?
+  notes         String?
+  status        String    @default("DRAFT")
+
+  // Tracking
+  viewCount     Int       @default(0)
+  firstViewedAt DateTime?
+  lastViewedAt  DateTime?
+  acceptedAt    DateTime?
+  rejectedAt    DateTime?
+  sentAt        DateTime?
+
+  // Relações
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdById String
+  items       ProposalItem[]
+  acceptance  Acceptance?
+  rejection   Rejection?
+  events      ProposalEvent[]
+  sectionViews ProposalSectionView[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workspaceId, status])
+  @@index([slug])
+}
+
+model ProposalItem {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float    @default(1)
+  unitPrice   Float
+  order       Int      @default(0)
+
+  @@index([proposalId])
+}
+
+model Acceptance {
+  id              String   @id @default(cuid())
+  proposalId      String   @unique
+  proposal        Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  name            String
+  email           String
+  document        String?
+  ipAddress       String?
+  userAgent       String?
+  // Code signature
+  verificationCode String?
+  verifiedAt      DateTime?
+  acceptedAt      DateTime @default(now())
+}
+
+model Rejection {
+  id         String   @id @default(cuid())
+  proposalId String   @unique
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  reason     String?
+  ipAddress  String?
+  rejectedAt DateTime @default(now())
+}
+
+model ProposalEvent {
+  id         String   @id @default(cuid())
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  type       String
+  metadata   String?
+  createdAt  DateTime @default(now())
+
+  @@index([proposalId, createdAt])
+}
+
+// Analytics granular: tempo gasto em cada seção
+model ProposalSectionView {
+  id         String   @id @default(cuid())
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  section    String   // 'hero' | 'description' | 'items' | 'notes' | 'cta'
+  timeSpent  Int      // milliseconds
+  scrollDepth Int     @default(0) // 0-100
+  sessionId  String   // anonymous session id (cookie-less)
+  createdAt  DateTime @default(now())
+
+  @@index([proposalId, section])
+}
+
+// ────────────────────────────────────────────────────────────────
+// TEMPLATES
+// ────────────────────────────────────────────────────────────────
+
+model ProposalTemplate {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?
+  category     String?   // 'consultoria' | 'design' | 'desenvolvimento' | ...
+  titleTemplate String?
+  bodyTemplate String?   // markdown/rich text com {{vars}}
+  notesTemplate String?
+  defaultItems String?   // JSON array
+  isShared     Boolean   @default(false) // futuro: marketplace
+  useCount     Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([workspaceId])
+}
