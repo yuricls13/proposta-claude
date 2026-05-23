@@ -57,3 +57,6 @@ docs/research/
 docs/stories/
 docs/qa/
 .env.example
+
+.vercel
+.env*
