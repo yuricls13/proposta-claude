@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
-import { Fraunces } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 
-const fraunces = Fraunces({
+const inter = Inter({
   subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
   variable: '--font-serif',
   display: 'swap',
-  axes: ['opsz', 'SOFT'],
 });
 
 export const metadata: Metadata = {
@@ -23,11 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${GeistSans.variable} ${GeistMono.variable} ${fraunces.variable}`}
-      style={{ ['--font-sans' as string]: 'var(--font-geist-sans)' }}
-    >
+    <html lang="pt-BR" className={`${inter.variable} ${poppins.variable}`}>
       <body>{children}</body>
     </html>
   );

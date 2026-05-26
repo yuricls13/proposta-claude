@@ -4,30 +4,30 @@
 
 @layer base {
   :root {
-    --font-sans: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Poppins', system-ui, sans-serif;
 
     /* shadcn CSS variables — espelham tokens do tailwind.config.ts */
-    --background: 38 38% 97%;
-    --foreground: 30 6% 10%;
+    --background: 210 40% 98%;       /* #F8FAFC */
+    --foreground: 217 32% 17%;       /* #1E293B */
     --card: 0 0% 100%;
-    --card-foreground: 30 6% 10%;
+    --card-foreground: 217 32% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 30 6% 10%;
-    --primary: 167 33% 28%;
+    --popover-foreground: 217 32% 17%;
+    --primary: 245 100% 17%;         /* #0B0058 navy */
     --primary-foreground: 0 0% 100%;
-    --secondary: 38 25% 92%;
-    --secondary-foreground: 30 6% 10%;
-    --muted: 38 25% 92%;
-    --muted-foreground: 36 6% 41%;
-    --accent: 167 33% 90%;
-    --accent-foreground: 167 33% 23%;
-    --destructive: 0 75% 42%;
+    --secondary: 210 40% 96%;        /* #F1F5F9 */
+    --secondary-foreground: 217 32% 17%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%; /* #64748B */
+    --accent: 214 100% 92%;          /* #DBEAFE accent-soft */
+    --accent-foreground: 221 83% 53%;/* #2563EB */
+    --destructive: 0 72% 51%;        /* #DC2626 */
     --destructive-foreground: 0 0% 100%;
-    --border: 36 25% 84%;
-    --input: 36 25% 84%;
-    --ring: 167 33% 28%;
-    --radius: 10px;
+    --border: 213 27% 91%;           /* #E2E8F0 */
+    --input: 213 27% 91%;
+    --ring: 221 83% 53%;             /* #2563EB */
+    --radius: 8px;
   }
 
   * {
@@ -43,14 +43,12 @@
 
   body {
     @apply bg-bg text-ink font-sans;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
 
   ::selection {
     @apply bg-accent-soft text-accent-hover;
   }
 
-  /* Disable focus outline on mouse, preserve for keyboard */
   :focus:not(:focus-visible) {
     outline: none;
   }
@@ -61,7 +59,7 @@
     @apply rounded-lg border border-ink-line bg-white shadow-soft;
   }
 
-  /* Status badges — design semântico próprio (shadcn Badge é genérico) */
+  /* Status badges — design semântico próprio */
   .badge-status {
     @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors;
   }
@@ -74,7 +72,6 @@
 
   .editorial {
     @apply font-serif text-ink;
-    font-feature-settings: 'ss01', 'liga', 'kern', 'onum';
   }
 
   .editorial p {

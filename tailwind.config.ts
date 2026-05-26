@@ -11,66 +11,70 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // === Tokens próprios (warm neutral) — fonte da verdade do design system ===
+        // === Tokens próprios (Agência Dedicada design system) ===
         bg: {
-          DEFAULT: '#FBF9F6',
-          alt: '#F3EFE8',
-          dark: '#1B1A17',
+          DEFAULT: '#F8FAFC',
+          alt: '#F1F5F9',
+          dark: '#0B0058',
         },
         ink: {
-          DEFAULT: '#1B1A17',
-          soft: '#3D3A34',
-          mute: '#6F6A60',
-          line: '#E5DFD4',
+          DEFAULT: '#1E293B',
+          soft: '#475569',
+          mute: '#64748B',
+          line: '#E2E8F0',
         },
         accent: {
-          DEFAULT: '#2F5D50',
-          hover: '#264A40',
-          soft: '#E6EFEC',
+          DEFAULT: '#2563EB',
+          hover: '#1D4ED8',
+          soft: '#DBEAFE',
+        },
+        cta: {
+          DEFAULT: '#F97316',
+          hover: '#EA6A00',
         },
         // Brand dinâmico — usado SOMENTE na rota pública /p/[slug] via CSS vars
-        brand: 'var(--brand-accent, #2F5D50)',
-        'brand-soft': 'var(--brand-soft, #E6EFEC)',
-        'brand-hover': 'var(--brand-hover, #264A40)',
+        brand: 'var(--brand-accent, #2563EB)',
+        'brand-soft': 'var(--brand-soft, #DBEAFE)',
+        'brand-hover': 'var(--brand-hover, #1D4ED8)',
         'brand-fg': 'var(--brand-fg, #FFFFFF)',
-        warn: '#B45309',
-        ok: '#15803D',
-        danger: '#B91C1C',
+        warn: '#D97706',
+        ok: '#16A34A',
+        danger: '#DC2626',
 
-        // === Aliases que shadcn primitives consomem (mapeiam para os tokens acima) ===
-        border: '#E5DFD4',
-        input: '#E5DFD4',
-        ring: '#2F5D50',
-        background: '#FBF9F6',
-        foreground: '#1B1A17',
+        // === Aliases que shadcn primitives consomem ===
+        border: '#E2E8F0',
+        input: '#E2E8F0',
+        ring: '#2563EB',
+        background: '#F8FAFC',
+        foreground: '#1E293B',
         primary: {
-          DEFAULT: '#2F5D50',
+          DEFAULT: '#0B0058',
           foreground: '#FFFFFF',
         },
         secondary: {
-          DEFAULT: '#F3EFE8',
-          foreground: '#1B1A17',
+          DEFAULT: '#F1F5F9',
+          foreground: '#1E293B',
         },
         destructive: {
-          DEFAULT: '#B91C1C',
+          DEFAULT: '#DC2626',
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: '#F3EFE8',
-          foreground: '#6F6A60',
+          DEFAULT: '#F1F5F9',
+          foreground: '#64748B',
         },
         popover: {
           DEFAULT: '#FFFFFF',
-          foreground: '#1B1A17',
+          foreground: '#1E293B',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          foreground: '#1B1A17',
+          foreground: '#1E293B',
         },
       },
       fontFamily: {
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Poppins', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       fontSize: {
@@ -83,13 +87,16 @@ const config: Config = {
         editorial: '720px',
       },
       borderRadius: {
-        lg: '10px',
+        lg: '12px',
         md: '8px',
-        sm: '6px',
+        sm: '4px',
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(27, 26, 23, 0.04), 0 4px 12px rgba(27, 26, 23, 0.04)',
-        focus: '0 0 0 3px rgba(47, 93, 80, 0.18)',
+        soft: '0 1px 3px rgba(11, 0, 88, 0.08), 0 4px 12px rgba(11, 0, 88, 0.06)',
+        focus: '0 0 0 3px rgba(37, 99, 235, 0.18)',
+        cta: '0 4px 16px rgba(249, 115, 22, 0.35)',
+        md: '0 4px 12px rgba(11, 0, 88, 0.12)',
+        lg: '0 8px 24px rgba(11, 0, 88, 0.16)',
       },
       transitionTimingFunction: {
         spring: 'cubic-bezier(0.16, 1, 0.3, 1)',
